@@ -4,7 +4,7 @@ import { SERVER_PORT } from '../constants';
 
 const testerApp = express()
 const testerPort = 4224
-const requestCount = 10;
+const requestCount = 5;
 
 testerApp.get('/test-worker', async (req, res) => {
     console.log('Starting to test worker')

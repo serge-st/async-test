@@ -8,9 +8,11 @@
     "start": "node dist/index.js",
     "watch:ts": "tsc -w",
     "server:watch:node": "nodemon dist/index.js",
-    "start:dev": "concurrently \"pnpm:watch:ts\" \"pnpm:server:watch:node\"",
-    "tester:watch:node": "nodemon dist/utils/requestTester.js",
-    "start:test": "concurrently \"pnpm:watch:ts\" \"pnpm:tester:watch:node\""
+    "build:image": "docker build -t node-alpine-worker .",
+    "start:dev": "docker-compose up",
+    "start:dev:local": "concurrently \"pnpm:watch:ts\" \"pnpm:server:watch:node\"",
+    "start:from:docker": "nodemon src/index.ts",
+    "start:tester": "nodemon src/utils/requestTester.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,8 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.24",
     "concurrently": "^8.2.2",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
