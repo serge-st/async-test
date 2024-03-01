@@ -1,8 +1,9 @@
 import express from 'express'
 import { performance } from 'perf_hooks'
 import { Worker } from 'worker_threads';
+import { SERVER_PORT } from './constants';
+
 const app = express()
-const port = 3000
 
 function fibonacci(n: number): number {
     if (n <= 1) return 1;
@@ -23,29 +24,33 @@ function fibonacciInWorker(n: number) {
 }
 
 app.get('/worker', async (req, res) => {
-    const start = performance.now();
-    await fibonacciInWorker(42)
+    const count = req.query.count || 1
+    console.log(`Processing worker request ${count}`);
+    performance.mark('start')
+    const result = await fibonacciInWorker(42)
     await new Promise((resolve) => setTimeout(resolve, 2000))
-    const end = performance.now();
-    console.log(`Request took ${end - start}ms`)
-    console.log('-------------------')
-    res.send('Hello World!')
+    performance.mark('end')
+    const { duration } = performance.measure('Worker Duration', 'start', 'end');
+    const isTrueResult = result === 433494437;
+    console.log(`Regular ${count} Duration: ${duration}, result is ${isTrueResult ? 'correct' : 'incorrect'}`)
+    console.log('=====================')
+    res.send(`Worker is done: ${result}`);
 });
 
-app.get('/', async (req, res) => {
-    const start = performance.now();
-    fibonacci(42)
+app.get('/regular', async (req, res) => {
+    const count = req.query.count || 1
+    console.log(`Processing regular request ${count}`);
+    performance.mark('start')
+    const result = fibonacci(42)
     await new Promise((resolve) => setTimeout(resolve, 2000))
-    const end = performance.now();
-    console.log(`Request took ${end - start}ms`)
-    console.log('-------------------')
-    res.send('Hello World!')
+    performance.mark('end')
+    const { duration } = performance.measure('Regular Duration', 'start', 'end');
+    const isTrueResult = result === 433494437;
+    console.log(`Regular ${count} Duration: ${duration}, result is ${isTrueResult ? 'correct' : 'incorrect'}`)
+    console.log('=====================')
+    res.send(`Regular is done: ${result}`);
 })
 
-app.get('/line', async (req, res) => {
-    res.send(`=====================\n=====================\n=====================\n`)
-});
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.listen(SERVER_PORT, () => {
+    console.log(`Server app listening on port ${SERVER_PORT}`)
 })

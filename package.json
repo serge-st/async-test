@@ -7,8 +7,10 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "watch:ts": "tsc -w",
-    "watch:node": "nodemon dist/index.js",
-    "start:dev": "concurrently \"pnpm:watch:ts\" \"pnpm:watch:node\""
+    "server:watch:node": "nodemon dist/index.js",
+    "start:dev": "concurrently \"pnpm:watch:ts\" \"pnpm:server:watch:node\"",
+    "tester:watch:node": "nodemon dist/utils/requestTester.js",
+    "start:test": "concurrently \"pnpm:watch:ts\" \"pnpm:tester:watch:node\""
   },
   "keywords": [],
   "author": "",
