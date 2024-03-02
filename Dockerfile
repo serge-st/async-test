@@ -5,6 +5,5 @@ RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pn
 WORKDIR /app
 COPY . .
 
-RUN pnpm install --frozen-lockfile
-RUN pnpm build
+RUN pnpm install --frozen-lockfile && pnpm build
 CMD ["pnpm", "start:from:docker"]

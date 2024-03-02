@@ -32,7 +32,7 @@ app.get('/worker', async (req, res) => {
     performance.mark('end')
     const { duration } = performance.measure('Worker Duration', 'start', 'end');
     const isTrueResult = result === 433494437;
-    console.log(`Regular ${count} Duration: ${duration}, result is ${isTrueResult ? 'correct' : 'incorrect'}`)
+    console.log(`Worker ${count} Duration: ${duration}, result is ${isTrueResult ? 'correct' : 'incorrect'}`)
     console.log('=====================')
     res.send(`Worker is done: ${result}`);
 });
